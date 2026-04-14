@@ -51,7 +51,7 @@
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            background: rgba(5, 5, 5, 0.9);
+            background: rgba(5, 5, 5, 0.95);
             backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(192, 192, 192, 0.1);
         }
@@ -62,6 +62,13 @@
             background: var(--metal-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            z-index: 1100;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
         }
 
         .nav-cta {
@@ -80,6 +87,52 @@
         .nav-cta:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(192, 192, 192, 0.2);
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 1100;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .menu-toggle span {
+            width: 30px;
+            height: 2px;
+            background: var(--silver);
+            transition: var(--transition-smooth);
+        }
+
+        /* Mobile Overlay */
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: var(--black);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1050;
+            transition: var(--transition-smooth);
+        }
+
+        .mobile-overlay.active {
+            right: 0;
+        }
+
+        .mobile-overlay a {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 2rem;
+            color: var(--silver);
+            text-decoration: none;
+            margin: 20px 0;
+            text-transform: uppercase;
         }
 
         /* Hero Section */
@@ -232,14 +285,27 @@
             border-top: 1px solid rgba(192, 192, 192, 0.1);
         }
 
+        /* Hamburger Animation */
+        .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .menu-toggle.active span:nth-child(2) { opacity: 0; }
+        .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        /* Responsive Breakpoints */
         @media (max-width: 1024px) {
             .price-card.featured { transform: scale(1); }
         }
 
         @media (max-width: 768px) {
+            nav { padding: 1rem 5%; }
+            .menu-toggle { display: flex; }
+            .nav-links { display: none; }
+            
             .info-section { grid-template-columns: 1fr; }
-            .gallery-item { min-width: 320px; }
+            .gallery-item { min-width: 320px; height: 400px; }
             .hero h1 { font-size: 3.5rem; }
+            .hero { padding: 0 5%; }
+            .pricing-section { padding: 80px 5%; }
+            .info-section { padding: 60px 5%; }
         }
     </style>
 </head>
@@ -247,8 +313,27 @@
 
     <nav>
         <div class="logo">B13 GYM</div>
-        <a href="tel:+2347049402410" class="nav-cta">Call Now</a>
+        
+        <!-- Desktop Nav -->
+        <div class="nav-links">
+            <a href="#pricing" style="color: white; text-decoration: none; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">Plans</a>
+            <a href="tel:+2347049402410" class="nav-cta">Call Now</a>
+        </div>
+
+        <!-- Hamburger Toggle -->
+        <div class="menu-toggle" id="mobile-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-overlay" id="overlay">
+        <a href="#pricing" onclick="toggleMenu()">Pricing</a>
+        <a href="#about" onclick="toggleMenu()">About</a>
+        <a href="tel:+2347049402410" class="nav-cta">Join the Elite</a>
+    </div>
 
     <section class="hero">
         <div class="reveal-up">
@@ -342,7 +427,7 @@
         </div>
     </section>
 
-    <section class="info-section">
+    <section id="about" class="info-section">
         <div class="reveal-left">
             <h2>Visit Us Today.</h2>
             <p style="color: #666; font-size: 1.1rem;">
@@ -377,6 +462,19 @@
     <script>
         lucide.createIcons();
 
+        // Mobile Menu Logic
+        const menuBtn = document.getElementById('mobile-menu');
+        const overlay = document.getElementById('overlay');
+
+        function toggleMenu() {
+            menuBtn.classList.toggle('active');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : 'auto';
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+
+        // Scroll Reveals
         ScrollReveal().reveal('.reveal-up', {
             distance: '50px',
             origin: 'bottom',
@@ -398,15 +496,18 @@
             interval: 200
         });
 
-        // Horizontal Slide effect on scroll
+        // Gallery Scroll Effect (Desktop Only rate)
         window.addEventListener('scroll', () => {
             const track = document.querySelector('.gallery-track');
             const scrolled = window.pageYOffset;
             const gallerySection = document.querySelector('.gallery-container');
             const sectionTop = gallerySection.offsetTop;
             
+            // Adjust rate for smaller screens
+            const scrollRate = window.innerWidth < 768 ? 0.1 : 0.2;
+
             if (scrolled > sectionTop - window.innerHeight) {
-                const move = (scrolled - (sectionTop - window.innerHeight)) * 0.2;
+                const move = (scrolled - (sectionTop - window.innerHeight)) * scrollRate;
                 track.style.transform = `translateX(-${move}px)`;
             }
         });
