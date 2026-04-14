@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>B13 GYM AND FITNESS | The Iron Elite</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
@@ -113,13 +113,15 @@
             right: -100%;
             width: 100%;
             height: 100vh;
-            background: var(--black);
+            background: rgba(0, 0, 0, 0.96);
+            backdrop-filter: blur(20px);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 1050;
             transition: var(--transition-smooth);
+            gap: 2rem;
         }
 
         .mobile-overlay.active {
@@ -128,11 +130,24 @@
 
         .mobile-overlay a {
             font-family: 'Syncopate', sans-serif;
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: var(--silver);
             text-decoration: none;
-            margin: 20px 0;
             text-transform: uppercase;
+            letter-spacing: 3px;
+            transition: 0.2s;
+        }
+        
+        .mobile-overlay a:active {
+            opacity: 0.6;
+        }
+        
+        .mobile-overlay .nav-cta {
+            font-size: 1rem;
+            background: var(--bright-silver);
+            color: black;
+            margin-top: 20px;
+            padding: 14px 40px;
         }
 
         /* Hero Section */
@@ -162,16 +177,39 @@
             -webkit-text-stroke: 1px var(--silver);
         }
 
-        /* Gallery Section */
+        /* Gallery Section - IMPROVED SCROLL ON MOBILE */
         .gallery-container {
             padding: 100px 0;
             background: #080808;
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: var(--silver) #222;
+            cursor: grab;
+            position: relative;
+        }
+        
+        .gallery-container::-webkit-scrollbar {
+            height: 6px;
+        }
+        
+        .gallery-container::-webkit-scrollbar-track {
+            background: #1a1a1a;
+            border-radius: 10px;
+        }
+        
+        .gallery-container::-webkit-scrollbar-thumb {
+            background: var(--silver);
+            border-radius: 10px;
         }
 
         .gallery-track {
             display: flex;
             gap: 20px;
             padding: 0 5%;
+            width: max-content;
+            transition: transform 0.1s ease-out;
         }
 
         .gallery-item {
@@ -180,6 +218,8 @@
             position: relative;
             overflow: hidden;
             border: 1px solid rgba(192, 192, 192, 0.1);
+            border-radius: 4px;
+            flex-shrink: 0;
         }
 
         .gallery-item img {
@@ -201,6 +241,35 @@
             background: rgba(0,0,0,0.7);
             padding: 15px;
             backdrop-filter: blur(5px);
+        }
+        
+        /* Scroll hint for mobile */
+        .scroll-hint {
+            text-align: center;
+            margin-top: -50px;
+            margin-bottom: 30px;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            color: #aaa;
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .scroll-hint {
+                display: block;
+            }
+            .gallery-item {
+                min-width: 280px;
+                height: 400px;
+            }
+            .gallery-track {
+                padding: 0 20px;
+                gap: 15px;
+            }
+            .gallery-container {
+                padding: 60px 0;
+                cursor: auto;
+            }
         }
 
         /* Pricing Section */
@@ -300,12 +369,32 @@
             .menu-toggle { display: flex; }
             .nav-links { display: none; }
             
-            .info-section { grid-template-columns: 1fr; }
-            .gallery-item { min-width: 320px; height: 400px; }
-            .hero h1 { font-size: 3.5rem; }
-            .hero { padding: 0 5%; }
+            .info-section { grid-template-columns: 1fr; gap: 40px; }
+            .hero h1 { font-size: 3rem; }
+            .hero { padding: 0 5%; background-attachment: scroll; }
             .pricing-section { padding: 80px 5%; }
             .info-section { padding: 60px 5%; }
+            .price-card { padding: 35px 25px; }
+            .mobile-overlay a { font-size: 1.4rem; }
+        }
+        
+        @media (max-width: 480px) {
+            .gallery-item {
+                min-width: 240px;
+                height: 350px;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+        
+        /* Additional smoothness */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        a, button, [role="button"] {
+            cursor: pointer;
         }
     </style>
 </head>
@@ -330,14 +419,14 @@
 
     <!-- Mobile Menu Overlay -->
     <div class="mobile-overlay" id="overlay">
-        <a href="#pricing" onclick="toggleMenu()">Pricing</a>
-        <a href="#about" onclick="toggleMenu()">About</a>
-        <a href="tel:+2347049402410" class="nav-cta">Join the Elite</a>
+        <a href="#pricing" onclick="closeMenu()">Pricing</a>
+        <a href="#about" onclick="closeMenu()">About</a>
+        <a href="tel:+2347049402410" class="nav-cta" onclick="closeMenu()">Join the Elite</a>
     </div>
 
     <section class="hero">
         <div class="reveal-up">
-            <div class="status-badge"><span style="width: 8px; height: 8px; background: #00ff7f; border-radius: 50%;"></span> Now Open</div>
+            <div class="status-badge"><span style="width: 8px; height: 8px; background: #00ff7f; border-radius: 50%; display: inline-block;"></span> Now Open</div>
             <h1>B13 GYM <br><span>FITNESS</span></h1>
             <p style="max-width: 600px; color: #bbb; font-size: 1.2rem; margin-bottom: 40px;">
                 The most elite training facility at Refinery Junction. Premium equipment, expert coaching, and a community of high achievers.
@@ -346,34 +435,45 @@
         </div>
     </section>
 
-    <section class="gallery-container">
-        <div class="gallery-track">
+    <!-- Gallery Section with horizontal scroll (mobile & desktop) -->
+    <div class="scroll-hint">
+        ← SWIPE TO EXPLORE → 
+    </div>
+    <section class="gallery-container" id="gallerySection">
+        <div class="gallery-track" id="galleryTrack">
             <div class="gallery-item reveal-right">
-                <img src="https://images.pexels.com/photos/116077/pexels-photo-116077.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Weights Area">
+                <img src="https://images.pexels.com/photos/116077/pexels-photo-116077.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Weights Area" loading="lazy">
                 <div class="overlay-text">
                     <h3>IRON ZONE</h3>
                     <p style="font-size: 0.7rem; letter-spacing: 2px;">PURE STRENGTH</p>
                 </div>
             </div>
             <div class="gallery-item reveal-right">
-                <img src="https://images.pexels.com/photos/4162449/pexels-photo-4162449.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Training Area">
+                <img src="https://images.pexels.com/photos/4162449/pexels-photo-4162449.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Training Area" loading="lazy">
                 <div class="overlay-text">
                     <h3>ELITE CARDIO</h3>
                     <p style="font-size: 0.7rem; letter-spacing: 2px;">ENDURANCE HUB</p>
                 </div>
             </div>
             <div class="gallery-item reveal-right">
-                <img src="https://images.pexels.com/photos/3253501/pexels-photo-3253501.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Recovery">
+                <img src="https://images.pexels.com/photos/3253501/pexels-photo-3253501.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Recovery" loading="lazy">
                 <div class="overlay-text">
                     <h3>BOXING RING</h3>
                     <p style="font-size: 0.7rem; letter-spacing: 2px;">FIGHT CLUB</p>
                 </div>
             </div>
             <div class="gallery-item reveal-right">
-                <img src="https://images.pexels.com/photos/1552249/pexels-photo-1552249.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Bodybuilding">
+                <img src="https://images.pexels.com/photos/1552249/pexels-photo-1552249.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Bodybuilding" loading="lazy">
                 <div class="overlay-text">
                     <h3>RESULTS</h3>
                     <p style="font-size: 0.7rem; letter-spacing: 2px;">TRANSFORMATION</p>
+                </div>
+            </div>
+            <div class="gallery-item reveal-right">
+                <img src="https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Heavy lifting" loading="lazy">
+                <div class="overlay-text">
+                    <h3>POWER RACKS</h3>
+                    <p style="font-size: 0.7rem; letter-spacing: 2px;">STRONGER EVERY DAY</p>
                 </div>
             </div>
         </div>
@@ -460,57 +560,160 @@
     </footer>
 
     <script>
-        lucide.createIcons();
-
-        // Mobile Menu Logic
+        // Helper to close mobile menu cleanly
+        function closeMenu() {
+            const menuBtn = document.getElementById('mobile-menu');
+            const overlay = document.getElementById('overlay');
+            if (menuBtn && overlay) {
+                menuBtn.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+        
+        // Mobile Menu Logic with better touch
         const menuBtn = document.getElementById('mobile-menu');
         const overlay = document.getElementById('overlay');
-
+        
         function toggleMenu() {
             menuBtn.classList.toggle('active');
             overlay.classList.toggle('active');
             document.body.style.overflow = overlay.classList.contains('active') ? 'hidden' : 'auto';
         }
-
-        menuBtn.addEventListener('click', toggleMenu);
-
-        // Scroll Reveals
-        ScrollReveal().reveal('.reveal-up', {
-            distance: '50px',
+        
+        if (menuBtn) {
+            menuBtn.addEventListener('click', toggleMenu);
+        }
+        
+        // Close menu when clicking overlay links (redundant but safe)
+        const overlayLinks = document.querySelectorAll('.mobile-overlay a');
+        overlayLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                closeMenu();
+                // Allow smooth scroll after menu closes
+                const targetId = link.getAttribute('href');
+                if (targetId && targetId !== '#') {
+                    e.preventDefault();
+                    const targetElem = document.querySelector(targetId);
+                    if (targetElem) {
+                        targetElem.scrollIntoView({ behavior: 'smooth' });
+                    } else if (targetId === 'tel:+2347049402410') {
+                        window.location.href = targetId;
+                    }
+                }
+            });
+        });
+        
+        // Lucide icons reload
+        lucide.createIcons();
+        
+        // ScrollReveal initialization (delays adjusted for performance)
+        ScrollReveal({ reset: false, distance: '40px', duration: 900, easing: 'ease-out' }).reveal('.reveal-up', {
             origin: 'bottom',
-            duration: 1000,
-            delay: 100,
-            easing: 'ease-out'
+            interval: 120
         });
-
+        
         ScrollReveal().reveal('.reveal-left', {
-            distance: '100px',
             origin: 'left',
-            duration: 1200
+            distance: '70px',
+            duration: 1000
         });
-
+        
         ScrollReveal().reveal('.reveal-right', {
-            distance: '100px',
             origin: 'right',
-            duration: 1000,
-            interval: 200
+            distance: '60px',
+            duration: 900,
+            interval: 180
         });
-
-        // Gallery Scroll Effect (Desktop Only rate)
-        window.addEventListener('scroll', () => {
-            const track = document.querySelector('.gallery-track');
-            const scrolled = window.pageYOffset;
-            const gallerySection = document.querySelector('.gallery-container');
-            const sectionTop = gallerySection.offsetTop;
+        
+        // GALLERY FIX: Fully scrollable horizontally on all devices WITHOUT conflicting transform
+        // We remove the scroll-based translateX and instead rely on native horizontal scroll
+        // (Mobile already can scroll, desktop gets better UX with scrollbar)
+        // The old script was forcing a transform based on scrollY, preventing manual scroll on mobile.
+        // Now we simply keep overflow-x auto, and no forced transform.
+        // For better cross-browser: we ensure gallery-container is scrollable and track is flex.
+        
+        // Optional: for desktop, add smooth momentum scrolling hint
+        const galleryContainer = document.querySelector('.gallery-container');
+        if (galleryContainer) {
+            // Enable mouse wheel horizontal scroll if needed (nice for desktop users)
+            galleryContainer.addEventListener('wheel', (e) => {
+                if (e.deltaY !== 0 && window.innerWidth <= 1024) {
+                    e.preventDefault();
+                    galleryContainer.scrollLeft += e.deltaY;
+                }
+            }, { passive: false });
+        }
+        
+        // Remove any leftover scroll transform that might have been set from the previous code.
+        // Since we replaced the gallery entirely with a native horizontal scroll, no JS transform interferes.
+        // Additionally we add a subtle grab cursor on desktop
+        if (window.innerWidth > 768) {
+            galleryContainer.style.cursor = 'grab';
+            let isDown = false;
+            let startX;
+            let scrollLeft;
             
-            // Adjust rate for smaller screens
-            const scrollRate = window.innerWidth < 768 ? 0.1 : 0.2;
-
-            if (scrolled > sectionTop - window.innerHeight) {
-                const move = (scrolled - (sectionTop - window.innerHeight)) * scrollRate;
-                track.style.transform = `translateX(-${move}px)`;
+            galleryContainer.addEventListener('mousedown', (e) => {
+                isDown = true;
+                galleryContainer.style.cursor = 'grabbing';
+                startX = e.pageX - galleryContainer.offsetLeft;
+                scrollLeft = galleryContainer.scrollLeft;
+                e.preventDefault();
+            });
+            
+            galleryContainer.addEventListener('mouseleave', () => {
+                isDown = false;
+                galleryContainer.style.cursor = 'grab';
+            });
+            
+            galleryContainer.addEventListener('mouseup', () => {
+                isDown = false;
+                galleryContainer.style.cursor = 'grab';
+            });
+            
+            galleryContainer.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - galleryContainer.offsetLeft;
+                const walk = (x - startX) * 1.5;
+                galleryContainer.scrollLeft = scrollLeft - walk;
+            });
+        }
+        
+        // Reinitialize Lucide icons after any dynamic content (none here but ensure)
+        setTimeout(() => {
+            lucide.createIcons();
+        }, 100);
+        
+        // Small fix: mobile menu overflow reset when orientation changes
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768 && overlay.classList.contains('active')) {
+                closeMenu();
             }
+            // Re-check if we need to update any styles
         });
+        
+        // Also ensure the gallery items don't get weird transform from the previous snippet
+        // We override any residual inline style from potential legacy script
+        const galleryTrack = document.getElementById('galleryTrack');
+        if (galleryTrack) {
+            galleryTrack.style.transform = 'none';
+        }
+        
+        // Scroll hint fade out after first scroll (optional)
+        const hint = document.querySelector('.scroll-hint');
+        if (hint && galleryContainer) {
+            galleryContainer.addEventListener('scroll', () => {
+                if (hint.style.opacity !== '0') {
+                    hint.style.transition = 'opacity 0.5s';
+                    hint.style.opacity = '0';
+                    setTimeout(() => {
+                        if (hint) hint.style.display = 'none';
+                    }, 500);
+                }
+            }, { once: true });
+        }
     </script>
 </body>
 </html>
