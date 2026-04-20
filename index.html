@@ -19,6 +19,7 @@
             background-color: var(--dark);
             color: #fff;
             overflow-x: hidden;
+            width: 100%;
         }
 
         .heading-bold {
@@ -29,7 +30,7 @@
         /* Architectural Scroll Reveal */
         .reveal {
             opacity: 0;
-            transform: translateY(50px);
+            transform: translateY(30px);
             transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
@@ -88,90 +89,132 @@
             color: transparent;
             -webkit-text-stroke: 1px rgba(255,255,255,0.2);
         }
+
+        /* Fix for mobile horizontal scroll and layout */
+        .section-container {
+            width: 100%;
+            max-width: 100vw;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Mobile Menu Animation */
+        #mobile-menu {
+            transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+        }
+        #mobile-menu.hidden-menu {
+            transform: translateX(100%);
+        }
     </style>
 </head>
 <body class="antialiased">
 
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 px-8 py-6 flex justify-between items-center bg-black/80 backdrop-blur-md border-b border-white/5">
-        <div class="heading-bold text-2xl tracking-tighter">PAM <span class="lime-text">FITNESS</span></div>
+    <nav class="fixed w-full z-50 px-6 py-4 md:px-12 md:py-6 flex justify-between items-center bg-black/90 backdrop-blur-md border-b border-white/10">
+        <div class="heading-bold text-xl md:text-2xl tracking-tighter">PAM <span class="lime-text">FITNESS</span></div>
+        
+        <!-- Desktop Nav -->
         <div class="hidden md:flex gap-10 text-[10px] tracking-[0.3em] font-bold uppercase">
             <a href="#about" class="nav-link">Power</a>
             <a href="#programs" class="nav-link">Programs</a>
             <a href="#location" class="nav-link">Base</a>
         </div>
-        <a href="tel:07011780762" class="bg-lime text-black px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-transform">Join Now</a>
+
+        <div class="flex items-center gap-4">
+            <a href="tel:07011780762" class="hidden sm:block bg-lime text-black px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-transform">Join Now</a>
+            <!-- Mobile Toggle -->
+            <button id="menu-toggle" class="md:hidden text-white text-2xl focus:outline-none">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
+        </div>
     </nav>
+
+    <!-- Mobile Overlay Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-black hidden-menu md:hidden flex flex-col justify-center items-center gap-8 px-10">
+        <button id="menu-close" class="absolute top-6 right-6 text-3xl text-white">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <a href="#about" class="heading-bold text-4xl hover:text-lime transition-colors">Power</a>
+        <a href="#programs" class="heading-bold text-4xl hover:text-lime transition-colors">Programs</a>
+        <a href="#location" class="heading-bold text-4xl hover:text-lime transition-colors">Base</a>
+        <a href="tel:07011780762" class="btn-gym px-8 py-4 w-full text-center mt-8">Join Now</a>
+    </div>
 
     <!-- Hero Section -->
     <section class="relative h-screen flex items-center justify-center overflow-hidden">
         <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=1920" class="absolute inset-0 w-full h-full object-cover opacity-30 grayscale" alt="Gym Interior">
         <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black"></div>
         
-        <div class="relative z-10 text-center px-4">
-            <span class="block text-lime uppercase tracking-[1em] mb-6 reveal text-[10px] font-black">Warri • Bendel Estate</span>
-            <h1 class="heading-bold text-6xl md:text-9xl font-black mb-4 reveal leading-none">STRONGER.</h1>
-            <h1 class="heading-bold text-5xl md:text-8xl font-black mb-8 reveal leading-none outline-text">EVERY DAY.</h1>
-            <p class="text-gray-400 text-sm md:text-lg max-w-lg mx-auto font-light tracking-wide reveal">The ultimate training facility for those who refuse to settle for average.</p>
+        <div class="relative z-10 text-center px-6 w-full">
+            <span class="block text-lime uppercase tracking-[0.6em] md:tracking-[1em] mb-6 reveal text-[9px] md:text-[10px] font-black">Warri • Bendel Estate</span>
+            <h1 class="heading-bold text-5xl sm:text-7xl md:text-9xl font-black mb-2 reveal leading-[0.9] tracking-tighter">STRONGER.</h1>
+            <h1 class="heading-bold text-4xl sm:text-6xl md:text-8xl font-black mb-8 reveal leading-[0.9] outline-text tracking-tighter">EVERY DAY.</h1>
+            <p class="text-gray-400 text-xs sm:text-sm md:text-lg max-w-lg mx-auto font-light tracking-wide reveal">The ultimate training facility for those who refuse to settle for average.</p>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/30 text-[8px] uppercase tracking-[0.4em] reveal text-center">
+            Explore <br> <i class="fa-solid fa-chevron-down mt-2 animate-bounce"></i>
         </div>
     </section>
 
     <!-- Stats & Intro -->
-    <section id="about" class="py-32 px-8 max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center">
+    <section id="about" class="py-20 md:py-32 section-container max-w-7xl mx-auto grid md:grid-cols-2 gap-12 md:gap-20 items-center">
         <div class="reveal">
             <span class="text-white/30 uppercase tracking-[0.5em] text-[10px] font-bold mb-4 block">The Facility</span>
-            <h2 class="heading-bold text-5xl font-black mb-8 leading-tight">Beyond <br><span class="lime-text">Standard.</span></h2>
+            <h2 class="heading-bold text-4xl md:text-5xl font-black mb-6 md:mb-8 leading-tight">Beyond <br><span class="lime-text">Standard.</span></h2>
             <p class="text-gray-400 leading-relaxed mb-10 text-sm md:text-base font-light">
                 Located at Yellow House 14, Westend Hospital Road, Pam Fitness is Warri's premier strength and conditioning center. With a 4.4-star reputation, we combine elite equipment with an atmosphere that breeds results.
             </p>
-            <div class="grid grid-cols-2 gap-8 border-t border-white/10 pt-10">
+            <div class="grid grid-cols-2 gap-4 md:gap-8 border-t border-white/10 pt-10">
                 <div>
-                    <span class="block text-4xl font-black lime-text">4.4</span>
+                    <span class="block text-3xl md:text-4xl font-black lime-text">4.4</span>
                     <span class="text-[9px] uppercase tracking-widest text-white/40 font-bold">Google Rating</span>
                 </div>
                 <div>
-                    <span class="block text-4xl font-black lime-text">120+</span>
+                    <span class="block text-3xl md:text-4xl font-black lime-text">120+</span>
                     <span class="text-[9px] uppercase tracking-widest text-white/40 font-bold">Active Members</span>
                 </div>
             </div>
         </div>
-        <div class="gym-img-container rounded-sm reveal aspect-square md:aspect-auto md:h-[600px]">
+        <div class="gym-img-container rounded-sm reveal aspect-square md:h-[600px]">
             <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&q=80&w=1200" class="gym-img w-full h-full object-cover" alt="Weight Room">
         </div>
     </section>
 
     <!-- Programs Grid -->
-    <section id="programs" class="py-24 bg-[#0c0c0c] px-8">
-        <div class="max-w-7xl mx-auto">
-            <div class="mb-20 reveal">
-                <h2 class="heading-bold text-6xl font-black italic tracking-tighter">ELITE<br><span class="lime-text">PROGRAMS</span></h2>
+    <section id="programs" class="py-20 md:py-24 bg-[#0c0c0c]">
+        <div class="section-container max-w-7xl">
+            <div class="mb-12 md:mb-20 reveal">
+                <h2 class="heading-bold text-4xl md:text-6xl font-black italic tracking-tighter">ELITE<br><span class="lime-text">PROGRAMS</span></h2>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-1">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-1">
                 <div class="reveal group">
-                    <div class="gym-img-container h-[500px]">
+                    <div class="gym-img-container h-[400px] md:h-[500px]">
                         <img src="https://images.unsplash.com/photo-1583454110551-21f2fa20019b?auto=format&fit=crop&q=80&w=800" class="gym-img w-full h-full object-cover">
-                        <div class="absolute bottom-0 left-0 p-8 w-full bg-gradient-to-t from-black to-transparent">
-                            <h3 class="heading-bold text-xl mb-2">Powerlifting</h3>
-                            <p class="text-[9px] text-lime uppercase tracking-widest font-bold">Strength Focus</p>
+                        <div class="absolute bottom-0 left-0 p-6 md:p-8 w-full bg-gradient-to-t from-black to-transparent">
+                            <h3 class="heading-bold text-lg md:text-xl mb-1 md:mb-2">Powerlifting</h3>
+                            <p class="text-[8px] md:text-[9px] text-lime uppercase tracking-widest font-bold">Strength Focus</p>
                         </div>
                     </div>
                 </div>
                 <div class="reveal" style="transition-delay: 0.1s;">
-                    <div class="gym-img-container h-[500px]">
+                    <div class="gym-img-container h-[400px] md:h-[500px]">
                         <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=800" class="gym-img w-full h-full object-cover">
-                        <div class="absolute bottom-0 left-0 p-8 w-full bg-gradient-to-t from-black to-transparent">
-                            <h3 class="heading-bold text-xl mb-2">Cardio HIIT</h3>
-                            <p class="text-[9px] text-lime uppercase tracking-widest font-bold">Fat Burn Focus</p>
+                        <div class="absolute bottom-0 left-0 p-6 md:p-8 w-full bg-gradient-to-t from-black to-transparent">
+                            <h3 class="heading-bold text-lg md:text-xl mb-1 md:mb-2">Cardio HIIT</h3>
+                            <p class="text-[8px] md:text-[9px] text-lime uppercase tracking-widest font-bold">Fat Burn Focus</p>
                         </div>
                     </div>
                 </div>
-                <div class="reveal" style="transition-delay: 0.2s;">
-                    <div class="gym-img-container h-[500px]">
+                <div class="reveal sm:col-span-2 md:col-span-1" style="transition-delay: 0.2s;">
+                    <div class="gym-img-container h-[400px] md:h-[500px]">
                         <img src="https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?auto=format&fit=crop&q=80&w=800" class="gym-img w-full h-full object-cover">
-                        <div class="absolute bottom-0 left-0 p-8 w-full bg-gradient-to-t from-black to-transparent">
-                            <h3 class="heading-bold text-xl mb-2">Personal Training</h3>
-                            <p class="text-[9px] text-lime uppercase tracking-widest font-bold">1-on-1 Precision</p>
+                        <div class="absolute bottom-0 left-0 p-6 md:p-8 w-full bg-gradient-to-t from-black to-transparent">
+                            <h3 class="heading-bold text-lg md:text-xl mb-1 md:mb-2">Personal Training</h3>
+                            <p class="text-[8px] md:text-[9px] text-lime uppercase tracking-widest font-bold">1-on-1 Precision</p>
                         </div>
                     </div>
                 </div>
@@ -180,38 +223,37 @@
     </section>
 
     <!-- Location & Operating Hours -->
-    <section id="location" class="py-32 px-8 bg-black">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-20">
+    <section id="location" class="py-20 md:py-32 bg-black">
+        <div class="section-container max-w-7xl grid md:grid-cols-2 gap-12 md:gap-20">
             <div class="reveal">
                 <span class="lime-text uppercase tracking-[0.5em] text-[10px] font-bold mb-6 block">Operations</span>
-                <h2 class="heading-bold text-5xl font-black mb-10 leading-none">Find Your <br>Base.</h2>
+                <h2 class="heading-bold text-4xl md:text-5xl font-black mb-8 md:mb-10 leading-none">Find Your <br>Base.</h2>
                 
-                <div class="space-y-8 mb-12">
-                    <div class="flex items-start gap-6">
+                <div class="space-y-6 md:space-y-8 mb-10 md:mb-12">
+                    <div class="flex items-start gap-5">
                         <i class="fa-solid fa-location-dot lime-text mt-1"></i>
                         <div>
-                            <h4 class="text-xs font-bold uppercase tracking-widest mb-2">Address</h4>
-                            <p class="text-gray-400 text-sm">Bendel Estate, Yellow House 14 <br>Westend Hospital Road, Warri</p>
+                            <h4 class="text-[10px] font-bold uppercase tracking-widest mb-1">Address</h4>
+                            <p class="text-gray-400 text-xs sm:text-sm">Bendel Estate, Yellow House 14 <br>Westend Hospital Road, Warri</p>
                         </div>
                     </div>
-                    <div class="flex items-start gap-6">
+                    <div class="flex items-start gap-5">
                         <i class="fa-solid fa-clock lime-text mt-1"></i>
                         <div>
-                            <h4 class="text-xs font-bold uppercase tracking-widest mb-2">Hours</h4>
-                            <p class="text-gray-400 text-sm">Open Today: <span class="text-lime">06:00 AM — 08:00 PM</span></p>
+                            <h4 class="text-[10px] font-bold uppercase tracking-widest mb-1">Hours</h4>
+                            <p class="text-gray-400 text-xs sm:text-sm">Open Today: <span class="text-lime">06:00 AM — 08:00 PM</span></p>
                         </div>
                     </div>
                 </div>
 
                 <div class="flex flex-col gap-4">
-                    <a href="tel:07011780762" class="btn-gym px-10 py-5 text-[10px] text-center">
-                        Contact Support: 0701 178 0762
+                    <a href="tel:07011780762" class="btn-gym px-6 py-4 md:px-10 md:py-5 text-[9px] md:text-[10px] text-center">
+                        <i class="fa-solid fa-phone mr-2"></i> Call: 0701 178 0762
                     </a>
                 </div>
             </div>
 
-            <div class="relative h-[500px] rounded-sm overflow-hidden border border-white/10 reveal shadow-2xl">
-                <!-- Map focused on Bendel Estate/Westend Hospital Road Area, Warri -->
+            <div class="relative h-[350px] md:h-[500px] rounded-sm overflow-hidden border border-white/10 reveal shadow-2xl">
                 <iframe 
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3971.0543209865487!2d5.748111975999946!3d5.559013994421255!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1041ade925e58123%3A0xb7976868a25c798e!2sWestend%20Hospital%20Road%2C%20Warri!5e0!3m2!1sen!2sng!4v1713100000000!5m2!1sen!2sng" 
                     width="100%" 
@@ -220,23 +262,23 @@
                     allowfullscreen="" 
                     loading="lazy">
                 </iframe>
-                <div class="absolute inset-0 pointer-events-none border-[20px] border-black/20"></div>
+                <div class="absolute inset-0 pointer-events-none border-[10px] md:border-[20px] border-black/20"></div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="py-20 border-t border-white/5 px-8">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
-            <div class="heading-bold text-3xl font-black">PAM <span class="lime-text">FITNESS</span></div>
+    <footer class="py-16 md:py-20 border-t border-white/5 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
+            <div class="heading-bold text-2xl font-black">PAM <span class="lime-text">FITNESS</span></div>
             
-            <div class="flex gap-8 text-[9px] uppercase font-bold tracking-widest text-gray-500">
+            <div class="flex gap-8 text-[8px] md:text-[9px] uppercase font-bold tracking-widest text-gray-500">
                 <a href="#" class="hover:text-lime transition-colors">Instagram</a>
                 <a href="#" class="hover:text-lime transition-colors">Facebook</a>
                 <a href="#" class="hover:text-lime transition-colors">Twitter</a>
             </div>
 
-            <div class="text-[9px] text-gray-600 uppercase tracking-[0.5em]">
+            <div class="text-[8px] md:text-[9px] text-gray-600 uppercase tracking-[0.5em]">
                 © 2026 Lord Moonlight Design
             </div>
         </div>
@@ -253,6 +295,25 @@
         }, { threshold: 0.1 });
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Mobile Menu Logic
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuLinks = mobileMenu.querySelectorAll('a');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.remove('hidden-menu');
+            document.body.style.overflow = 'hidden';
+        });
+
+        const closeMenu = () => {
+            mobileMenu.classList.add('hidden-menu');
+            document.body.style.overflow = 'auto';
+        };
+
+        menuClose.addEventListener('click', closeMenu);
+        menuLinks.forEach(link => link.addEventListener('click', closeMenu));
     </script>
 </body>
 </html>
